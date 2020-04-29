@@ -3,6 +3,7 @@
 namespace Armincms\Qasedak;
 
 use Illuminate\Support\Manager;
+use Armincms\Qasedak\Contracts\Service;
 
 class ServiceManager extends Manager
 {

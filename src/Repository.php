@@ -35,12 +35,12 @@ class Repository
     { 
         return is_array($number)
                 ? $this->bulkMessage($message, $number) 
-                : $this->store()->send($message, $number);  
+                : $this->service->send($message, $number);  
     } 
 
-    public function bulkMessage($message, (array) $numbers)
+    public function bulkMessage($message, array $numbers)
     {
-        if($this->service implements Contracts\BulkService) {
+        if($this->service instanceof Contracts\BulkService) {
             $this->service->bulk($message, $numbers);
         } else {
             $this->bulkMessageWithoutBulkServices($message, $numbers);

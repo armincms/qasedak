@@ -1,6 +1,6 @@
 <?php 
 
-namespace Armincs\Qasedak\Contracts;
+namespace Armincms\Qasedak\Contracts;
 
 interface Service 
 {
