@@ -24,7 +24,7 @@ class ServiceManager extends Manager
      */
     protected function createArminDriver()
     { 
-        return $this->repository(new ArminService((array) $this->config->get('amrin-sms')));
+        return $this->repository(new ArminService((array) $this->config->get('armin-sms')));
     }
 
     /**
