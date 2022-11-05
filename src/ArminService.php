@@ -2,16 +2,16 @@
 
 namespace Armincms\Qasedak;
 
-use Armincms\Qasedak\Contracts\BulkService; 
+use Armincms\Qasedak\Contracts\BulkService;
 use SoapClient;
 
 class ArminService implements BulkService
-{   
+{
     public function __construct($config)
     {
         $this->config = $this->mergeConfigs((array) $config);
 
-        ini_set("soap.wsdl_cache_enabled", "0"); 
+        ini_set("soap.wsdl_cache_enabled", "0");
     }
 
     /**
@@ -22,12 +22,33 @@ class ArminService implements BulkService
      * @param  array  $options 
      * @return bool          
      */
-    public function send(string $text, $to, $options = [])
+    public function sendMessage(string $text, $to, $options = [])
     {
         return $this->client()->SendSimpleSMS2(
             array_merge($this->config, $options, compact('text', 'to'))
-        );  
-    }  
+        );
+    }
+
+    /**
+     * Send pattern to the given number.
+     * 
+     * @param  string $pattern    
+     * @param  string $number  
+     * @param  array  $variables 
+     * @param  array  $options 
+     * @return bool          
+     */
+    public function sendPattern(string $pattern, $number, $variables = [], $options = [])
+    {
+        return $this->client()->sendPatternSms(
+            $this->config('from'),
+            $number,
+            $this->config('username'),
+            $this->config('password'),
+            $pattern,
+            $variables
+        );
+    }
 
     /**
      * Send text-message into a group of numbers.
@@ -38,22 +59,20 @@ class ArminService implements BulkService
      * @return bool          
      */
     public function bulk(string $text, array $to, $options = [])
-    { 
+    {
         return $this->client()->SendSimpleSMS(
             array_merge($this->config, $options, compact('text', 'to'))
         );
     }
 
     public function url()
-    { 
-        $panel = $this->panel();
-
-        return "http://api.{$panel}.com/post/send.asmx?wsdl"; 
+    {
+        return "http://ippanel.com/class/sms/wsdlservice/server.php?wsdl";
     }
 
     public function panel()
     {
-        return $this->config('panel', 'arminsms');
+        return $this->config('panel', 'payamak-panel');
     }
 
     public function mergeConfigs(array $config)
@@ -61,7 +80,7 @@ class ArminService implements BulkService
         return array_merge([
             'isflash'   => false,
             'username'  => '',
-            'password'  => '', 
+            'password'  => '',
             'from'  => '',
             'to'    => '',
             'text'  => '',
@@ -69,13 +88,13 @@ class ArminService implements BulkService
         ], $config);
     }
 
-    public function config(string $key, $default)
+    public function config(string $key, $default = null)
     {
         return data_get($this->config, $key, $default);
     }
 
     public function client()
     {
-        return new SoapClient($this->url(), array('encoding'=>'UTF-8'));
+        return new SoapClient($this->url(), array('encoding' => 'UTF-8'));
     }
 }
