@@ -1,12 +1,12 @@
-<?php 
+<?php
 
 namespace Armincms\Qasedak\Contracts;
 
 
 interface BulkService extends Service
-{ 
+{
 	/**
-	 * Send text-message into a group of numbers.
+	 * Send text-message to the given number.
 	 * 
 	 * @param  string $text    
 	 * @param  array  $numbers  

@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 namespace Armincms\Qasedak\Contracts;
 
-interface Service 
+interface Service
 {
 	/**
 	 * Send text-message into a number.
@@ -12,5 +12,16 @@ interface Service
 	 * @param  array  $options 
 	 * @return bool          
 	 */
-	public function send(string $text, $number, $options = []);  
+	public function sendMessage(string $text, $number, $options = []);
+
+	/**
+	 * Send pattern to the given number.
+	 * 
+	 * @param  string $pattern    
+	 * @param  string $number  
+	 * @param  array  $variables 
+	 * @param  array  $options 
+	 * @return bool          
+	 */
+	public function sendPattern(string $pattern, $number, $variables = [], $options = []);
 }
